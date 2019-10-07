@@ -2,12 +2,13 @@ Exemplo Simples de um banco utilizando Interface gráfica do JAVA com o Banco de
 
 Temas abordados:
 
-Operadores aritméticos
-CRUD
-Plugins de conexão
-Interface gráfica (Feita na IDE NetBeans)
-Orientação a objetos
-Banco de dados (SQL 2014)
+- Operadores aritméticos
+- CRUD
+- Plugins de conexão
+- Interface gráfica (Feita na IDE NetBeans)
+- Orientação a objetos
+- Banco de dados (SQL 2014)
+
 Instruções:
 
 Realizar o backup do banco de dados (Banco) no SQL 2014 Management Studio.
