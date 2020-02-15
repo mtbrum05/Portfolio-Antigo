@@ -42,6 +42,7 @@ class EstadoController extends AppController
      */
     public function view($id = null)
     {
+
         $estado = $this->Estado->get($id, [
             'contain' => [],
         ]);
@@ -111,7 +112,7 @@ class EstadoController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->request->allowMethod(['post', 'delete', 'options']);
         $estado = $this->Estado->get($id);
         $message = 'Deleted';
         if (!$this->Estado->delete($estado)) {

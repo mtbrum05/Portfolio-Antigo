@@ -12,6 +12,14 @@ use App\Controller\AppController;
  */
 class FabricantecarroController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+        $this->RequestHandler->ext = 'json';
+    }
+
     /**
      * Index method
      *
@@ -21,7 +29,11 @@ class FabricantecarroController extends AppController
     {
         $fabricantecarro = $this->paginate($this->Fabricantecarro);
 
-        $this->set(compact('fabricantecarro'));
+        $this->set([            
+            'fabricantecarro' => $fabricantecarro,
+            '_serialize' => ['fabricantecarro']
+            
+        ]);
     }
 
     /**
@@ -37,7 +49,10 @@ class FabricantecarroController extends AppController
             'contain' => [],
         ]);
 
-        $this->set('fabricantecarro', $fabricantecarro);
+        $this->set([
+            'fabricantecarro' => $fabricantecarro,
+            '_serialize' => ['fabricantecarro']        
+            ]);
     }
 
     /**
@@ -51,13 +66,16 @@ class FabricantecarroController extends AppController
         if ($this->request->is('post')) {
             $fabricantecarro = $this->Fabricantecarro->patchEntity($fabricantecarro, $this->request->getData());
             if ($this->Fabricantecarro->save($fabricantecarro)) {
-                $this->Flash->success(__('The fabricantecarro has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'Saved';
+            } else {
+                $message = $fabricantecarro->getErrors();
             }
-            $this->Flash->error(__('The fabricantecarro could not be saved. Please, try again.'));
         }
-        $this->set(compact('fabricantecarro'));
+        $this->set([
+            'message' => $message,
+            'fabricantecarro' => $fabricantecarro,
+            '_serialize' => ['fabricantecarro','message']
+        ]); 
     }
 
     /**
@@ -75,13 +93,16 @@ class FabricantecarroController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $fabricantecarro = $this->Fabricantecarro->patchEntity($fabricantecarro, $this->request->getData());
             if ($this->Fabricantecarro->save($fabricantecarro)) {
-                $this->Flash->success(__('The fabricantecarro has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The fabricantecarro could not be saved. Please, try again.'));
+                $message = 'Saved';
+            }else {
+                $message = $fabricantecarro->getErrors();
+            }             
         }
-        $this->set(compact('fabricantecarro'));
+        $this->set([
+            'message' => $message,
+            'fabricantecarro' => $fabricantecarro,
+            '_serialize' => ['fabricantecarro', 'message']
+        ]);
     }
 
     /**
@@ -93,14 +114,15 @@ class FabricantecarroController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->request->allowMethod(['post','delete','options']);
         $fabricantecarro = $this->Fabricantecarro->get($id);
-        if ($this->Fabricantecarro->delete($fabricantecarro)) {
-            $this->Flash->success(__('The fabricantecarro has been deleted.'));
-        } else {
-            $this->Flash->error(__('The fabricantecarro could not be deleted. Please, try again.'));
+        $message = 'Deleted';
+        if (!$this->Fabricantecarro->delete($fabricantecarro)) {
+            $message = $fabricantecarro->getErrors();
         }
-
-        return $this->redirect(['action' => 'index']);
+        $this->set([
+            'message' => $message,
+            '_serialize' => ['message']
+        ]);
     }
 }
