@@ -12,6 +12,13 @@ use App\Controller\AppController;
  */
 class FabricanteitemController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+        $this->RequestHandler->ext = 'json';
+    }
     /**
      * Index method
      *
@@ -21,7 +28,10 @@ class FabricanteitemController extends AppController
     {
         $fabricanteitem = $this->paginate($this->Fabricanteitem);
 
-        $this->set(compact('fabricanteitem'));
+        $this->set([
+            'fabricanteitem' => $fabricanteitem,
+            '_serialize' => ['fabricanteitem']        
+            ]);
     }
 
     /**
@@ -37,7 +47,10 @@ class FabricanteitemController extends AppController
             'contain' => [],
         ]);
 
-        $this->set('fabricanteitem', $fabricanteitem);
+        $this->set([            
+            'fabricanteitem' => $fabricanteitem,
+            '_serialize' => ['fabricanteitem']
+            ]);
     }
 
     /**
@@ -51,13 +64,16 @@ class FabricanteitemController extends AppController
         if ($this->request->is('post')) {
             $fabricanteitem = $this->Fabricanteitem->patchEntity($fabricanteitem, $this->request->getData());
             if ($this->Fabricanteitem->save($fabricanteitem)) {
-                $this->Flash->success(__('The fabricanteitem has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'Saved';
+            } else {
+                $message = $fabricanteitem->getErrors();
             }
-            $this->Flash->error(__('The fabricanteitem could not be saved. Please, try again.'));
         }
-        $this->set(compact('fabricanteitem'));
+        $this->set([
+            'message' => $message,
+            'fabricanteitem' => $fabricanteitem,
+            '_serialize' => ['fabricanteitem','message']
+        ]); 
     }
 
     /**
@@ -75,13 +91,16 @@ class FabricanteitemController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $fabricanteitem = $this->Fabricanteitem->patchEntity($fabricanteitem, $this->request->getData());
             if ($this->Fabricanteitem->save($fabricanteitem)) {
-                $this->Flash->success(__('The fabricanteitem has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The fabricanteitem could not be saved. Please, try again.'));
+                $message = 'Saved';
+            }else {
+                $message = $fabricanteitem->getErrors();
+            }             
         }
-        $this->set(compact('fabricanteitem'));
+        $this->set([
+            'message' => $message,
+            'fabricanteitem' => $fabricanteitem,
+            '_serialize' => ['fabricanteitem', 'message']
+        ]);
     }
 
     /**
@@ -95,12 +114,13 @@ class FabricanteitemController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $fabricanteitem = $this->Fabricanteitem->get($id);
-        if ($this->Fabricanteitem->delete($fabricanteitem)) {
-            $this->Flash->success(__('The fabricanteitem has been deleted.'));
-        } else {
-            $this->Flash->error(__('The fabricanteitem could not be deleted. Please, try again.'));
+        $message = 'Deleted';
+        if (!$this->Fabricanteitem->delete($fabricanteitem)) {
+            $message = $fabricanteitem->getErrors();
         }
-
-        return $this->redirect(['action' => 'index']);
+        $this->set([
+            'message' => $message,
+            '_serialize' => ['message']
+        ]);
     }
 }
