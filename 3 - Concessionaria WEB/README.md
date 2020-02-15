@@ -1,5 +1,8 @@
 Projeto em andamento!
+
 Tecnologias utilizadas:
+   - Sistema Operacional:
+      -Ubuntu 18.04   
    - Banco:
       - Mysql Server
       - Dbeaver (client)
@@ -11,3 +14,9 @@ Tecnologias utilizadas:
 Commit 25/01/2020
   - Início da organização do backend
   - EstadoController funcionando o GET retornando JSON.
+
+Commit 15/02/2020
+  - Rotas para os EndPoints Estado,FabricanteCarro,FabricanteItem funcionando.
+  - Endpoints de Estado funcionando como API RESTful(GET/POST/PUT/DELETE).
+  - Endpoints de FabricanteCarro funcionando como API RESTful(GET/POST/PUT/DELETE).
+  - Endpoints de FabricanteItem funcionando como API RESTful(GET/POST/PUT/DELETE).
