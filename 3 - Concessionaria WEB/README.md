@@ -20,3 +20,7 @@ Commit 15/02/2020
   - Endpoints de Estado funcionando como API RESTful(GET/POST/PUT/DELETE).
   - Endpoints de FabricanteCarro funcionando como API RESTful(GET/POST/PUT/DELETE).
   - Endpoints de FabricanteItem funcionando como API RESTful(GET/POST/PUT/DELETE).
+  
+Commit 17/02/2020
+  - Rotas para o EndPoint Cidade funcionando.
+  - Endpoint de Cidade funcionando como API RESTful(GET/POST/PUT/DELETE).
