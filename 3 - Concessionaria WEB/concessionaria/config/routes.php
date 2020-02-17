@@ -21,6 +21,14 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->patch('/estado/id', ['controller' => 'estado', 'action' => 'edit']);
     $routes->options('/estado/id', ['controller' => 'estado', 'action' => 'delete']);
 
+    //cidade routes
+    $routes->resources('cidade');
+    $routes->get('/cidade', ['controller' => 'cidade', 'action' => 'index']); 
+    $routes->get('/cidade/:id', ['controller' => 'cidade', 'action' => 'view']);  
+    $routes->post('/cidade', ['controller' => 'cidade', 'action' => 'add']);
+    $routes->patch('/cidade/id', ['controller' => 'cidade', 'action' => 'edit']);
+    $routes->options('/cidade/id', ['controller' => 'cidade', 'action' => 'delete']);
+
     //fabricantecarro routes
     $routes->resources('fabricantecarro');
     $routes->get('/fabricantecarro', ['controller' => 'fabricantecarro', 'action' => 'index']); 
@@ -37,6 +45,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->post('/fabricanteitem', ['controller' => 'fabricanteitem', 'action' => 'add']);
     $routes->patch('/fabricanteitem/id', ['controller' => 'fabricanteitem', 'action' => 'edit']);
     $routes->options('/fabricanteitem/id', ['controller' => 'fabricanteitem', 'action' => 'delete']);
+
+    
 
     
     

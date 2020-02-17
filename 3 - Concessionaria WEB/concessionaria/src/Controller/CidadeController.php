@@ -12,6 +12,13 @@ use App\Controller\AppController;
  */
 class CidadeController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+        $this->RequestHandler->ext = 'json';
+    }
     /**
      * Index method
      *
@@ -21,7 +28,10 @@ class CidadeController extends AppController
     {
         $cidade = $this->paginate($this->Cidade);
 
-        $this->set(compact('cidade'));
+        $this->set([
+            'cidade' => $cidade,
+            '_serialize' => ['cidade']        
+            ]);
     }
 
     /**
@@ -37,7 +47,10 @@ class CidadeController extends AppController
             'contain' => [],
         ]);
 
-        $this->set('cidade', $cidade);
+        $this->set([            
+            'cidade' => $cidade,
+            '_serialize' => ['cidade']
+            ]);
     }
 
     /**
@@ -51,13 +64,16 @@ class CidadeController extends AppController
         if ($this->request->is('post')) {
             $cidade = $this->Cidade->patchEntity($cidade, $this->request->getData());
             if ($this->Cidade->save($cidade)) {
-                $this->Flash->success(__('The cidade has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'Saved';
+            } else {
+                $message = $cidade->getErrors();
             }
-            $this->Flash->error(__('The cidade could not be saved. Please, try again.'));
         }
-        $this->set(compact('cidade'));
+        $this->set([
+            'message' => $message,
+            'cidade' => $cidade,
+            '_serialize' => ['cidade','message']
+        ]); 
     }
 
     /**
@@ -75,13 +91,16 @@ class CidadeController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $cidade = $this->Cidade->patchEntity($cidade, $this->request->getData());
             if ($this->Cidade->save($cidade)) {
-                $this->Flash->success(__('The cidade has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The cidade could not be saved. Please, try again.'));
+                $message = 'Saved';
+            }else {
+                $message = $cidade->getErrors();
+            }             
         }
-        $this->set(compact('cidade'));
+        $this->set([
+            'message' => $message,
+            'cidade' => $cidade,
+            '_serialize' => ['cidade', 'message']
+        ]);
     }
 
     /**
@@ -95,12 +114,13 @@ class CidadeController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $cidade = $this->Cidade->get($id);
-        if ($this->Cidade->delete($cidade)) {
-            $this->Flash->success(__('The cidade has been deleted.'));
-        } else {
-            $this->Flash->error(__('The cidade could not be deleted. Please, try again.'));
+        $message = 'Deleted';
+        if (!$this->Cidade->delete($cidade)) {
+            $message = $cidade->getErrors();
         }
-
-        return $this->redirect(['action' => 'index']);
+        $this->set([
+            'message' => $message,
+            '_serialize' => ['message']
+        ]);
     }
 }
