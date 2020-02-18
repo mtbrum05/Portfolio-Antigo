@@ -46,6 +46,14 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->patch('/fabricanteitem/id', ['controller' => 'fabricanteitem', 'action' => 'edit']);
     $routes->options('/fabricanteitem/id', ['controller' => 'fabricanteitem', 'action' => 'delete']);
 
+    //item routes
+    $routes->resources('item');
+    $routes->get('/item', ['controller' => 'item', 'action' => 'index']); 
+    $routes->get('/item/:id', ['controller' => 'item', 'action' => 'view']);  
+    $routes->post('/item', ['controller' => 'item', 'action' => 'add']);
+    $routes->patch('/item/id', ['controller' => 'item', 'action' => 'edit']);
+    $routes->options('/item/id', ['controller' => 'item', 'action' => 'delete']);
+
     
 
     
