@@ -12,6 +12,13 @@ use App\Controller\AppController;
  */
 class ItemController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+        $this->RequestHandler->ext = 'json';
+    }
     /**
      * Index method
      *
@@ -21,7 +28,10 @@ class ItemController extends AppController
     {
         $item = $this->paginate($this->Item);
 
-        $this->set(compact('item'));
+        $this->set([
+            'item' => $item,
+            '_serialize' => ['item']        
+            ]);
     }
 
     /**
@@ -37,7 +47,10 @@ class ItemController extends AppController
             'contain' => [],
         ]);
 
-        $this->set('item', $item);
+        $this->set([            
+            'item' => $item,
+            '_serialize' => ['item']
+            ]);
     }
 
     /**
@@ -51,13 +64,16 @@ class ItemController extends AppController
         if ($this->request->is('post')) {
             $item = $this->Item->patchEntity($item, $this->request->getData());
             if ($this->Item->save($item)) {
-                $this->Flash->success(__('The item has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'Saved';
+            } else {
+                $message = $item->getErrors();
             }
-            $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-        $this->set(compact('item'));
+        $this->set([
+            'message' => $message,
+            'item' => $item,
+            '_serialize' => ['item','message']
+        ]); 
     }
 
     /**
@@ -75,13 +91,16 @@ class ItemController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Item->patchEntity($item, $this->request->getData());
             if ($this->Item->save($item)) {
-                $this->Flash->success(__('The item has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The item could not be saved. Please, try again.'));
+                $message = 'Saved';
+            }else {
+                $message = $item->getErrors();
+            }             
         }
-        $this->set(compact('item'));
+        $this->set([
+            'message' => $message,
+            'item' => $item,
+            '_serialize' => ['item', 'message']
+        ]);
     }
 
     /**
@@ -95,12 +114,13 @@ class ItemController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $item = $this->Item->get($id);
-        if ($this->Item->delete($item)) {
-            $this->Flash->success(__('The item has been deleted.'));
-        } else {
-            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
+        $message = 'Deleted';
+        if (!$this->Item->delete($item)) {
+            $message = $item->getErrors();
         }
-
-        return $this->redirect(['action' => 'index']);
+        $this->set([
+            'message' => $message,
+            '_serialize' => ['message']
+        ]);
     }
 }
