@@ -2,13 +2,20 @@ Projeto em andamento!
 
 Tecnologias utilizadas:
    - Sistema Operacional:
-      -Ubuntu 18.04   
+      
+      -Ubuntu 18.04 
+      
    - Banco:
+      
       - Mysql Server
       - Dbeaver (client)
+      
    - BackEnd:
+   
       - CakePHP
+      
    - FrontEnd:
+   
       - A definir(VUE.JS)
 
 Commit 25/01/2020
